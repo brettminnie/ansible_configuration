@@ -1,0 +1,11 @@
+---
+
+- name: Create groups
+  include: create.yml
+  with_items: system_groups
+  when: "{{ item.state }} is 'present'"
+
+- name: Remove groups
+  include: destroy.yml
+  with_items: system_groups
+  when: "{{ item.state }} is 'absent'"

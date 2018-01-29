@@ -1,0 +1,17 @@
+---
+
+- name: "Make sure we have a '{{ item.name }}' group"
+  group:
+    name: "{{ item.name }}"
+    state: present
+  become: true
+
+- block:
+    - name: "Allow '{{ item.name }}' group to have passwordless sudo"
+      lineinfile:
+        dest: /etc/sudoers
+        state: present
+        regexp: "'^%{{ item.name }}'"
+        line: "'%{{ item.name }} ALL=(ALL) NOPASSWD: ALL'"
+      become: true
+  when: "{{ item.is_sudoer|defaut(False) }}"

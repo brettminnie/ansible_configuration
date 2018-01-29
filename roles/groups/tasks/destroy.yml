@@ -1,0 +1,17 @@
+---
+
+- block:
+    - name: "Disallow '{{ item.name }}' group to have passwordless sudo"
+      lineinfile:
+        dest: /etc/sudoers
+        state: absent
+        regexp: "'^%{{ item.name }}'"
+        line: "'%{{ item.name }} ALL=(ALL) NOPASSWD: ALL'"
+      become: true
+  when: "{{ item.is_sudoer|defaut(False) }}"
+
+- name: "Make sure we removed the '{{ item.name }}' group"
+  group:
+    name: "{{ item.name }}"
+    state: absent
+  become: true
