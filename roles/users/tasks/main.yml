@@ -1,0 +1,13 @@
+---
+
+---
+
+- name: Create users
+  include: create.yml
+  with_items: system_users
+  when: "{{ item.state }} is 'present'"
+
+- name: Remove users
+  include: destroy.yml
+  with_items: system_users
+  when: "{{ item.state }} is 'absent'"

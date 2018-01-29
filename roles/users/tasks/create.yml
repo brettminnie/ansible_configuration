@@ -1,0 +1,32 @@
+---
+
+- name: Create user
+  user:
+    name: "{{ item.user_name }}"
+    state: present
+    createhome: "{{ item.createhome|default(True) }}"
+    shell: "{{ item.shell|default('/bin/bash') }}"
+    system: "{{ item.system|default(False) }}"
+  become: true
+
+- name: Add user groups
+  user:
+    name: "{{ item.user_name }}"
+    state: present
+    groups: "{{ group }}"
+    append: yes
+  become: true
+  with_items: "{{ item.groups | default([]) }}"
+  loop_control:
+    loop_var: group
+  when: item.groups|default(False)
+
+- name: Set up authorized keys for the users
+  authorized_key:
+    user: "{{ item.user_name }}"
+    key:  "{{ key }}"
+  become: true
+  with_items: "{{ item.public_keys| default([]) }}"
+  loop_control:
+    loop_var: key
+  when: item.public_keys|default(False)
