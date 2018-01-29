@@ -1,0 +1,6 @@
+---
+
+- name: "Ensure install the {{ item.name }} package"
+  apt:
+    name: "{{ item }}"
+    state: present
