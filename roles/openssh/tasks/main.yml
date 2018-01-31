@@ -1,0 +1,8 @@
+---
+
+- name: Install openssh packages
+  include_role: packages
+    tasks_from: install
+  with_items:
+    - openssh
+    - openssh-server
