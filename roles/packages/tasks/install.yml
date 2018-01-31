@@ -1,6 +1,7 @@
 ---
 
-- name: "Ensure install the {{ item.name }} package"
+- name: "Install the {{ item }} package"
   apt:
     name: "{{ item }}"
     state: present
+    install_recommends: no

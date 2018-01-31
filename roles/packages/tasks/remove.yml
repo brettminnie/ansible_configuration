@@ -1,0 +1,6 @@
+---
+
+- name: "Remove the {{ item }} package"
+  apt:
+    name: "{{ item }}"
+    state: absent

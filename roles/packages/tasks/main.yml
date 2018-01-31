@@ -1,0 +1,18 @@
+---
+
+- block:
+    - name: Update the cache
+      inclue: update.yml
+      tags:
+        - always
+
+    - name: Install packages
+      include: install.yml
+      with_items: "{{ packages }}"
+      when: item.state is 'present'
+
+    - name: Remove packages
+      include: remove.yml
+      with_items: "{{ packages }}"
+      when: item.state is 'absent'
+  when: 
