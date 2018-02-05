@@ -6,3 +6,26 @@
   with_items:
     - openssh
     - openssh-server
+
+- block:
+    - name: Configure openssh server
+      template:
+        src: "{{ lookup('template', 'sshd_config') }}"
+        dest: /etc/ssh/sshd_conf
+        owner: root
+      become: true
+
+    - name: Restart the service
+      service:
+        name: ssh
+        state: restarted
+
+- block:
+    - name: Configure openssh
+      template:
+        src: "{{ lookup('template', 'ssh_config') }}"
+
+     - name: Restart the service
+       service:
+         name: ssh
+         state: restarted
