@@ -1,0 +1,7 @@
+---
+
+- name: Load our hosts from hosts.yml or if defined an alternate path
+  include_vars:
+    file: "{{ hosts_file|default(playbook_dir + '/hosts.yml') }}"
+  tags:
+    - always
