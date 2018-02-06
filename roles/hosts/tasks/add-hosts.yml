@@ -1,0 +1,10 @@
+---
+
+- name: Add our hosts to runtime groups
+  add_host:
+    name: "{{ item.name }}"
+    groups: "{{ host.name }}"
+    hostname: "{{ item.urn }}"
+    ansible_user: "{{ hosts.user|default('root') }}"
+  tags:
+    - always

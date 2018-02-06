@@ -5,3 +5,10 @@
     file: "{{ hosts_file|default(playbook_dir + '/hosts.yml') }}"
   tags:
     - always
+
+- block:
+    - name: Add our hosts to the inventory
+      include: "add-hosts.yml"
+      with_items: hosts
+      loop_control:
+        loop_var: hosts
