@@ -9,6 +9,6 @@
 - block:
     - name: Add our hosts to the inventory
       include: "add-hosts.yml"
-      with_items: hosts
+      with_items: "{{ hosts.groups }}"
       loop_control:
-        loop_var: hosts
+        loop_var: hosts_data
