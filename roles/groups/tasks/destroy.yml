@@ -8,10 +8,13 @@
         regexp: "'^%{{ item.name }}'"
         line: "'%{{ item.name }} ALL=(ALL) NOPASSWD: ALL'"
       become: true
-  when: "{{ item.is_sudoer|defaut(False) }}"
+  when:
+    - item.is_sudoer|default(False)
+    - not item.state|default(True)
 
 - name: "Make sure we removed the '{{ item.name }}' group"
   group:
     name: "{{ item.name }}"
     state: absent
   become: true
+  when: not item.state|default(True)

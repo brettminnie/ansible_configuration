@@ -4,14 +4,20 @@
   group:
     name: "{{ item.name }}"
     state: present
-  become: true
+  when: item.state|default(True)
 
 - block:
+    - name: "Check if '{{ item.name }}' exists in /etc/sudoers"
+      shell: "cat /etc/sudoers | grep {{ item.name }} | wc -l"
+      register: sudoer_test
+
     - name: "Allow '{{ item.name }}' group to have passwordless sudo"
       lineinfile:
         dest: /etc/sudoers
         state: present
         regexp: "'^%{{ item.name }}'"
-        line: "'%{{ item.name }} ALL=(ALL) NOPASSWD: ALL'"
-      become: true
-  when: "{{ item.is_sudoer|defaut(False) }}"
+        line: "%{{ item.name }} ALL=(ALL) NOPASSWD: ALL"
+      when: sudoer_test.stdout == '0'
+
+  when: item.is_sudoer|default(False)
+
